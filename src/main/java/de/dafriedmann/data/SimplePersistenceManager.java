@@ -2,14 +2,14 @@ package de.dafriedmann.data;
 
 import java.nio.file.Paths;
 
-import javax.inject.Singleton;
+import javax.enterprise.context.ApplicationScoped;
 
 import io.quarkus.arc.Lock;
 import one.microstream.storage.embedded.types.EmbeddedStorage;
 import one.microstream.storage.embedded.types.EmbeddedStorageManager;
 
 @Lock
-@Singleton
+@ApplicationScoped
 public class SimplePersistenceManager {
 
 	private final DataRoot root = new DataRoot();

@@ -3,11 +3,6 @@ package de.dafriedmann.data;
 import java.time.LocalDate;
 import java.util.Objects;
 
-/**
- * Simple pwrson pojo
- * @author Daniel
- *
- */
 public class Person {
 
 	private String prename;
