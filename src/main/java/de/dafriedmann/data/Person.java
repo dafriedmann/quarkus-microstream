@@ -13,8 +13,13 @@ public class Person {
 	public Person() {
 	}
 
+	public Person(String prename, String name, LocalDate dateOfBirth) {
+		this.prename = prename;
+		this.name = name;
+		this.dateOfBirth = dateOfBirth;
+	}
+	
 	public Person(String prename, String name, LocalDate dateOfBirth, Address address) {
-		super();
 		this.prename = prename;
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
@@ -38,6 +43,14 @@ public class Person {
 	}
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
+	}
+	
+	public Address getAddress() {
+		return address;
+	}
+	
+	public void setAddress(Address address) {
+		this.address = address;
 	}
 
 	@Override
