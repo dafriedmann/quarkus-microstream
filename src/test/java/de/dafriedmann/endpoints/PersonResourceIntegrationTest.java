@@ -57,11 +57,24 @@ public class PersonResourceIntegrationTest {
 		assertArrayEquals(givenPersons, spm.getRoot().getPersons().toArray());
 	}
 
+	@Test
+	public void testFindPersonByName() {
+		createDummyPersons(3).stream().forEach(p -> {
+			spm.getRoot().addPerson(p);
+		});
+		spm.store(spm.getRoot().getPersons());
+
+		Person[] persons = given().contentType(ContentType.JSON).get("/findbyname?name=Mustermann_1")
+				.as(Person[].class);
+		assertEquals(1, persons.length);
+		assertEquals("Mustermann_1", persons[0].getName());
+	}
+
 	private List<Person> createDummyPersons(int count) {
 		List<Person> persons = new ArrayList<>();
 		Address address = new Address("Teststrasse", "10", "Teststadt", "0123456789");
-		for (int i = 0; i < count; i++) {
-			persons.add(new Person("Max", "Mustermann", LocalDate.now(), address));
+		for (int i = 1; i <= count; i++) {
+			persons.add(new Person("Max", "Mustermann_" + i, LocalDate.now(), address));
 		}
 		return persons;
 	}

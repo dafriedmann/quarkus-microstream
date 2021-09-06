@@ -9,7 +9,7 @@ public class Person {
 	private String name;
 	private LocalDate dateOfBirth;
 	private Address address;
-	
+
 	public Person() {
 	}
 
@@ -18,7 +18,7 @@ public class Person {
 		this.name = name;
 		this.dateOfBirth = dateOfBirth;
 	}
-	
+
 	public Person(String prename, String name, LocalDate dateOfBirth, Address address) {
 		this.prename = prename;
 		this.name = name;
@@ -29,26 +29,31 @@ public class Person {
 	public String getPrename() {
 		return prename;
 	}
+
 	public void setPrename(String prename) {
 		this.prename = prename;
 	}
+
 	public String getName() {
 		return name;
 	}
+
 	public void setName(String name) {
 		this.name = name;
 	}
+
 	public LocalDate getDateOfBirth() {
 		return dateOfBirth;
 	}
+
 	public void setDateOfBirth(LocalDate dateOfBirth) {
 		this.dateOfBirth = dateOfBirth;
 	}
-	
+
 	public Address getAddress() {
 		return address;
 	}
-	
+
 	public void setAddress(Address address) {
 		this.address = address;
 	}
@@ -76,5 +81,5 @@ public class Person {
 		return "Person [prename=" + prename + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", address=" + address
 				+ "]";
 	}
-	
+
 }
