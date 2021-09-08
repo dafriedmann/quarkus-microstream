@@ -14,6 +14,11 @@ public interface PersonService {
 	public void addPerson(Person person);
 
 	/**
+	 * Remove person from storage
+	 */
+	public void removePerson(Person person);
+
+	/**
 	 * Get all stored persons
 	 * 
 	 * @return - a person collection

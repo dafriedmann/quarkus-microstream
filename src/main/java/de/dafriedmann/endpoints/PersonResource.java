@@ -4,13 +4,13 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-
 import de.dafriedmann.data.Person;
 import de.dafriedmann.service.PersonService;
 
@@ -18,7 +18,7 @@ import de.dafriedmann.service.PersonService;
 public class PersonResource {
 
 	@Inject
-	private PersonService personService;
+	PersonService personService;
 
 	@GET
 	@Path("/all")
@@ -39,6 +39,14 @@ public class PersonResource {
 	public Person addPerson(Person person) {
 		this.personService.addPerson(person);
 		return person;
+	}
+
+	@DELETE
+	@Path("/delete")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public void removePerson(Person person) {
+		this.personService.removePerson(person);
 	}
 
 }

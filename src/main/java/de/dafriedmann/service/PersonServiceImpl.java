@@ -1,6 +1,8 @@
 package de.dafriedmann.service;
 
 import java.util.Collection;
+import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -34,4 +36,14 @@ public class PersonServiceImpl implements PersonService {
 		return spm.getRoot().getPersons().stream().filter(p -> p.getName().equals(name)).collect(Collectors.toList());
 	}
 
+	@Override
+	public void removePerson(Person person) {
+		boolean isRemoved = spm.getRoot().getPersons().removeIf(p -> p.equals(person));
+		if(!isRemoved){
+			throw new NoSuchElementException("Person not found in storage");
+		}
+		// Store persons back to storage
+		spm.storeRoot();
+	}
+	
 }

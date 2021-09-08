@@ -25,7 +25,7 @@ public class SimplePersistenceManager {
 	@ConfigProperty(name = "microstream.storage.type")
 	String storageType;
 
-	private EmbeddedStorageManager storageManager;
+	EmbeddedStorageManager storageManager;
 
 	private SimplePersistenceManager() {
 	}

@@ -3,9 +3,11 @@ package de.dafriedmann.endpoints;
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -26,7 +28,7 @@ import io.restassured.http.ContentType;
 public class PersonResourceIntegrationTest {
 
 	@Inject
-	private SimplePersistenceManager spm;
+	SimplePersistenceManager spm;
 
 	@BeforeEach
 	public void resetMicrostreamDB() {
@@ -35,7 +37,7 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testAddPerson() throws Exception {
+	public void testAddPersonIsSuccessfull() throws Exception {
 		Person me = new Person();
 		me.setName("Test");
 		me.setPrename("Test");
@@ -44,6 +46,11 @@ public class PersonResourceIntegrationTest {
 		given().contentType(ContentType.JSON).body(me).when().post("/add").then().statusCode(200);
 		assertEquals(1, spm.getRoot().getPersons().size());
 		assertEquals(me, spm.getRoot().getPersonAt(0));
+	}
+
+	@Test
+	public void testAddPersonFails() throws Exception {
+		given().contentType(ContentType.JSON).body("/").when().post("/add").then().statusCode(400);
 	}
 
 	@Test
@@ -68,6 +75,22 @@ public class PersonResourceIntegrationTest {
 				.as(Person[].class);
 		assertEquals(1, persons.length);
 		assertEquals("Mustermann_1", persons[0].getName());
+	}
+
+	@Test
+	public void testRemovePerson() {
+		List<Person> persons = createDummyPersons(3);
+		persons.stream().forEach(p -> {
+			spm.getRoot().addPerson(p);
+		});
+
+		spm.store(spm.getRoot().getPersons());
+
+		Person personToBeDeleted = persons.get(0);
+		given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
+
+        Collection<Person> storedPersons = spm.getRoot().getPersons();
+		assertFalse(storedPersons.stream().filter(p-> p.equals(personToBeDeleted)).findFirst().isPresent());
 	}
 
 	private List<Person> createDummyPersons(int count) {
