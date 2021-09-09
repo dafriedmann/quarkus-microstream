@@ -107,7 +107,11 @@
 			<properties>
             	<quarkus.package.type>native</quarkus.package.type>
             	<quarkus.native.additional-build-args>-H:ReflectionConfigurationFiles=reflect-config.json</quarkus.native.additional-build-args>
-        	</properties>
+				 <quarkus.native.additional-build-args>
+				--allow-incomplete-classpath,
+				--verbose
+				</quarkus.native.additional-build-args>
+			</properties>
 			<activation>
 				<property>
 					<name>native</name>
