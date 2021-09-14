@@ -1,6 +1,7 @@
 package de.dafriedmann.service;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -29,6 +30,16 @@ public class PersonServiceImpl implements PersonService {
 	@Override
 	public Collection<Person> getPersons() {
 		return this.spm.getRoot().getPersons();
+	}
+	
+	@Override
+	public void addPersons(Collection<Person> persons) {
+		Collection<Person> personsInStorage = this.spm.getRoot().getPersons();
+		persons.stream().forEach(p -> {
+			personsInStorage.add(p);
+		});
+		// Store persons list since new persons were added
+		this.spm.store(personsInStorage);
 	}
 
 	@Override

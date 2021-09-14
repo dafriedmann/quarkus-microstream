@@ -14,6 +14,13 @@ public interface PersonService {
 	public void addPerson(Person person);
 
 	/**
+	 * Add and persist new persons
+	 * 
+	 * @param person
+	 */
+	public void addPersons(Collection<Person> persons);
+
+	/**
 	 * Remove person from storage
 	 */
 	public void removePerson(Person person);

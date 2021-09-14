@@ -54,6 +54,13 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
+	public void testAddPersons() throws Exception {
+		List<Person> personsToStore = createDummyPersons(3);
+		given().contentType(ContentType.JSON).body(personsToStore).when().post("/add/batch").then().statusCode(200);
+		assertEquals(3, spm.getRoot().getPersons().size());
+	}
+
+	@Test
 	public void testGetPersons() {
 		createDummyPersons(3).stream().forEach(p -> {
 			spm.getRoot().addPerson(p);

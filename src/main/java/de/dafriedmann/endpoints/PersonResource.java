@@ -41,6 +41,15 @@ public class PersonResource {
 		return person;
 	}
 
+	@POST
+	@Path("/add/batch")
+	@Consumes(MediaType.APPLICATION_JSON)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Collection<Person> addPerson(Collection<Person> persons) {
+		this.personService.addPersons(persons);
+		return persons;
+	}
+
 	@DELETE
 	@Path("/delete")
 	@Consumes(MediaType.APPLICATION_JSON)
