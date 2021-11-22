@@ -5,81 +5,91 @@ import java.util.Objects;
 
 public class Person {
 
-	private String prename;
-	private String name;
-	private LocalDate dateOfBirth;
-	private Address address;
+    private Long id;
+    private String prename;
+    private String name;
+    private LocalDate dateOfBirth;
+    private Address address;
 
-	public Person() {
+    public Person() {
+    }
+
+    public Person(String prename, String name, LocalDate dateOfBirth) {
+        this. id = id;
+        this.prename = prename;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+    }
+
+    public Person(String prename, String name, LocalDate dateOfBirth, Address address) {
+        this.id = id;
+        this.prename = prename;
+        this.name = name;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+    }
+
+	public long getId() {
+		return id;
 	}
 
-	public Person(String prename, String name, LocalDate dateOfBirth) {
-		this.prename = prename;
-		this.name = name;
-		this.dateOfBirth = dateOfBirth;
-	}
-
-	public Person(String prename, String name, LocalDate dateOfBirth, Address address) {
-		this.prename = prename;
-		this.name = name;
-		this.dateOfBirth = dateOfBirth;
-		this.address = address;
+	public void setId(long id) {
+		this.id = id;
 	}
 
 	public String getPrename() {
-		return prename;
-	}
+        return prename;
+    }
 
-	public void setPrename(String prename) {
-		this.prename = prename;
-	}
+    public void setPrename(String prename) {
+        this.prename = prename;
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 
-	public void setName(String name) {
-		this.name = name;
-	}
+    public void setName(String name) {
+        this.name = name;
+    }
 
-	public LocalDate getDateOfBirth() {
-		return dateOfBirth;
-	}
+    public LocalDate getDateOfBirth() {
+        return dateOfBirth;
+    }
 
-	public void setDateOfBirth(LocalDate dateOfBirth) {
-		this.dateOfBirth = dateOfBirth;
-	}
+    public void setDateOfBirth(LocalDate dateOfBirth) {
+        this.dateOfBirth = dateOfBirth;
+    }
 
-	public Address getAddress() {
-		return address;
-	}
+    public Address getAddress() {
+        return address;
+    }
 
-	public void setAddress(Address address) {
-		this.address = address;
-	}
+    public void setAddress(Address address) {
+        this.address = address;
+    }
 
-	@Override
-	public int hashCode() {
-		return Objects.hash(address, dateOfBirth, name, prename);
-	}
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Person person = (Person) o;
+        return id == person.id && Objects.equals(prename, person.prename) && Objects.equals(name, person.name) && Objects.equals(dateOfBirth, person.dateOfBirth) && Objects.equals(address, person.address);
+    }
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Person other = (Person) obj;
-		return Objects.equals(address, other.address) && Objects.equals(dateOfBirth, other.dateOfBirth)
-				&& Objects.equals(name, other.name) && Objects.equals(prename, other.prename);
-	}
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, prename, name, dateOfBirth, address);
+    }
 
-	@Override
-	public String toString() {
-		return "Person [prename=" + prename + ", name=" + name + ", dateOfBirth=" + dateOfBirth + ", address=" + address
-				+ "]";
-	}
-
+    @Override
+    public String toString() {
+        return "Person{" +
+                "id=" + id +
+                ", prename='" + prename + '\'' +
+                ", name='" + name + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address=" + address +
+                '}';
+    }
 }

@@ -26,6 +26,12 @@ public interface PersonService {
 	public void removePerson(Person person);
 
 	/**
+	 * Update a person
+	 * @param person
+	 */
+	public void updatePerson(Person person);
+
+	/**
 	 * Get all stored persons
 	 * 
 	 * @return - a person collection

@@ -9,6 +9,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 
 import javax.inject.Inject;
 
@@ -38,10 +39,8 @@ public class PersonResourceIntegrationTest {
 
 	@Test
 	public void testAddPersonIsSuccessfull() throws Exception {
-		Person me = new Person();
-		me.setName("Test");
-		me.setPrename("Test");
-		me.setDateOfBirth(LocalDate.now());
+		Person me = new Person("Max", "Mustermann", LocalDate.now());
+		me.setId(1L);
 
 		given().contentType(ContentType.JSON).body(me).when().post("/add").then().statusCode(200);
 		assertEquals(1, spm.getRoot().getPersons().size());
@@ -90,7 +89,6 @@ public class PersonResourceIntegrationTest {
 		persons.stream().forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
-
 		spm.store(spm.getRoot().getPersons());
 
 		Person personToBeDeleted = persons.get(0);
@@ -100,11 +98,37 @@ public class PersonResourceIntegrationTest {
 		assertFalse(storedPersons.stream().filter(p-> p.equals(personToBeDeleted)).findFirst().isPresent());
 	}
 
+	@Test
+	public void testUpdatePerson(){
+		Person person = new Person("Max", "Mustermann", LocalDate.now());
+		person.setId(1L);
+		spm.store(spm.getRoot().getPersons().add(person));
+
+		Person updatedPerson = new Person( "Max", "Mustermann2", LocalDate.now());
+		updatedPerson.setId(1L);
+		given().contentType(ContentType.JSON).body(updatedPerson).when().post("/update").then().statusCode(200);
+
+		Collection<Person> storedPersons = spm.getRoot().getPersons();
+		assertEquals(storedPersons.stream().filter(p->p.getId() == person.getId()).findFirst().get(), person);
+	}
+	@Test
+	public void testUpdatePersonFails(){
+		Person person = new Person("Max", "Mustermann", LocalDate.now());
+		person.setId(1L);
+		spm.store(spm.getRoot().getPersons().add(person));
+
+		Person updatedPerson = new Person("Max", "Mustermann2", LocalDate.now());
+		updatedPerson.setId(2L);
+		given().contentType(ContentType.JSON).body(updatedPerson).when().post("/update").then().statusCode(404);
+	}
+
 	private List<Person> createDummyPersons(int count) {
 		List<Person> persons = new ArrayList<>();
 		Address address = new Address("Teststrasse", "10", "Teststadt", "0123456789");
 		for (int i = 1; i <= count; i++) {
-			persons.add(new Person("Max", "Mustermann_" + i, LocalDate.now(), address));
+			Person person = new Person("Max", "Mustermann_" + i, LocalDate.now(), address);
+			person.setId(Long.valueOf(i));
+			persons.add(person);
 		}
 		return persons;
 	}

@@ -20,7 +20,6 @@ public class Address {
 	public Address() {
 	}
 	
-
 	public String getStreet() {
 		return street;
 	}
@@ -53,8 +52,6 @@ public class Address {
 		this.phone = phone;
 	}
 
-	
-	
 	@Override
 	public int hashCode() {
 		return Objects.hash(city, houseNumber, phone, street);
