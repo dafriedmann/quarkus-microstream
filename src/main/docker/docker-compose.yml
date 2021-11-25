@@ -2,13 +2,13 @@ version: "3.9"
 services:
   quarkus-microstream-jvm:
     container_name: "quarkus-microstream-jvm"
-    image: herbstcampus/quarkus-microstream-native
+    image: dafriedmann/quarkus-microstream-jvm
     ports:
       - 8080:8080
     
   quarkus-microstream-native:
     container_name: "quarkus-microstream-native"
-    image: herbstcampus/quarkus-microstream-native
+    image: dafriedmann/quarkus-microstream-native
     ports:
       - 8090:8080
 
