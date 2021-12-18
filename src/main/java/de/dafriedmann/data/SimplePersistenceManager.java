@@ -19,6 +19,9 @@ import one.microstream.storage.embedded.types.EmbeddedStorageManager;
 @ApplicationScoped
 public class SimplePersistenceManager {
 
+	private static final String LOCAL_FILE_SYSTEM = "fs";
+	private static final String INMEMORY_FILE_SYSTEM = "mfs";
+
 	@ConfigProperty(name = "microstream.storage.dir")
 	String storageDir;
 
@@ -33,11 +36,11 @@ public class SimplePersistenceManager {
 	@PostConstruct
 	private void init() {
 		// Idea for in memory file system taken from https://github.com/belu/microquark
-		if (this.storageType.equals("mfs")) {
+		if (this.storageType.equals(INMEMORY_FILE_SYSTEM)) {
 			// use in memory file system
 			FileSystem fs = Jimfs.newFileSystem(Configuration.unix());
 			this.storageManager = EmbeddedStorage.start(new DataRoot(), fs.getPath(this.storageDir));
-		} else if (this.storageType.equals("fs")) {
+		} else if (this.storageType.equals(LOCAL_FILE_SYSTEM)) {
 			// Use on disk file system
 			this.storageManager = EmbeddedStorage.start(new DataRoot(), // root object
 					Paths.get(this.storageDir) // storage directory
