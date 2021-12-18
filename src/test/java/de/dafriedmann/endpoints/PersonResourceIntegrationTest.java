@@ -38,7 +38,7 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testAddPersonIsSuccessfull() throws Exception {
+	public void addPersonShouldResultInAddedPerson() throws Exception {
 		Person me = new Person("Max", "Mustermann", LocalDate.now());
 		me.setId(1L);
 
@@ -48,19 +48,19 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testAddPersonFails() throws Exception {
+	public void addPersonsWithNoContentShouldResultInBadRequest() throws Exception {
 		given().contentType(ContentType.JSON).body("/").when().post("/add").then().statusCode(400);
 	}
 
 	@Test
-	public void testAddPersons() throws Exception {
+	public void addPersonsShouldAddPersons() throws Exception {
 		List<Person> personsToStore = createDummyPersons(3);
 		given().contentType(ContentType.JSON).body(personsToStore).when().post("/add/batch").then().statusCode(200);
 		assertEquals(3, spm.getRoot().getPersons().size());
 	}
 
 	@Test
-	public void testGetPersons() {
+	public void getPersonsShouldReturnAllPersons() {
 		createDummyPersons(3).stream().forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
@@ -71,7 +71,7 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testFindPersonByName() {
+	public void findPersonByNameShouldReturnPerson() {
 		createDummyPersons(3).stream().forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
@@ -84,7 +84,7 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testRemovePerson() {
+	public void removePersonShouldResultInRemovedPerson() {
 		List<Person> persons = createDummyPersons(3);
 		persons.stream().forEach(p -> {
 			spm.getRoot().addPerson(p);
@@ -99,7 +99,7 @@ public class PersonResourceIntegrationTest {
 	}
 
 	@Test
-	public void testUpdatePerson(){
+	public void updatePersonShouldResultInUpdatedPerson(){
 		Person person = new Person("Max", "Mustermann", LocalDate.now());
 		person.setId(1L);
 		spm.store(spm.getRoot().getPersons().add(person));
@@ -111,8 +111,9 @@ public class PersonResourceIntegrationTest {
 		Collection<Person> storedPersons = spm.getRoot().getPersons();
 		assertEquals(storedPersons.stream().filter(p->p.getId() == person.getId()).findFirst().get(), person);
 	}
+
 	@Test
-	public void testUpdatePersonFails(){
+	public void updatePersonWithDifferentIDShouldResultInNoUpdate(){
 		Person person = new Person("Max", "Mustermann", LocalDate.now());
 		person.setId(1L);
 		spm.store(spm.getRoot().getPersons().add(person));
