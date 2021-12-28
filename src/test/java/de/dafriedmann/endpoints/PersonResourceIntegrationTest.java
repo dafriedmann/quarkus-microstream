@@ -61,7 +61,7 @@ public class PersonResourceIntegrationTest {
 
 	@Test
 	public void getPersonsShouldReturnAllPersons() {
-		createDummyPersons(3).stream().forEach(p -> {
+		createDummyPersons(3).forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
 		spm.store(spm.getRoot().getPersons());
@@ -72,7 +72,7 @@ public class PersonResourceIntegrationTest {
 
 	@Test
 	public void findPersonByNameShouldReturnPerson() {
-		createDummyPersons(3).stream().forEach(p -> {
+		createDummyPersons(3).forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
 		spm.store(spm.getRoot().getPersons());
@@ -86,7 +86,7 @@ public class PersonResourceIntegrationTest {
 	@Test
 	public void removePersonShouldResultInRemovedPerson() {
 		List<Person> persons = createDummyPersons(3);
-		persons.stream().forEach(p -> {
+		persons.forEach(p -> {
 			spm.getRoot().addPerson(p);
 		});
 		spm.store(spm.getRoot().getPersons());
@@ -95,7 +95,7 @@ public class PersonResourceIntegrationTest {
 		given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
 
         Collection<Person> storedPersons = spm.getRoot().getPersons();
-		assertFalse(storedPersons.stream().filter(p-> p.equals(personToBeDeleted)).findFirst().isPresent());
+		assertFalse(storedPersons.stream().anyMatch(p-> p.equals(personToBeDeleted)));
 	}
 
 	@Test
@@ -128,7 +128,7 @@ public class PersonResourceIntegrationTest {
 		Address address = new Address("Teststrasse", "10", "Teststadt", "0123456789");
 		for (int i = 1; i <= count; i++) {
 			Person person = new Person("Max", "Mustermann_" + i, LocalDate.now(), address);
-			person.setId(Long.valueOf(i));
+			person.setId(i);
 			persons.add(person);
 		}
 		return persons;
