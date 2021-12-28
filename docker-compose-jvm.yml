@@ -1,0 +1,24 @@
+version: "3.9"
+services:
+  quarkus-microstream-jvm:
+    container_name: "quarkus-microstream-jvm"
+    build: 
+      context: .
+      dockerfile: ./src/main/docker/Dockerfile.jvm
+    ports:
+      - 8080:8080
+    networks:
+      - quarkus-microstream
+    
+  quarkus-microstream-frontend:
+    container_name: "quarkus-microstream-frontend"
+    build:
+      context: ./src/main/vue/quarkus-microstream-frontend
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    networks:
+      - quarkus-microstream
+
+networks:
+  quarkus-microstream:
