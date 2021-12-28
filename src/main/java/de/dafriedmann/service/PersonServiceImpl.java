@@ -55,6 +55,16 @@ public class PersonServiceImpl implements PersonService {
 	}
 
 	@Override
+	public void removePersonById(long id) {
+		boolean isRemoved = spm.getRoot().getPersons().removeIf(p -> p.getId() == id);
+		if(!isRemoved){
+			throw new NoSuchElementException("Person not found in storage");
+		}
+		// Store persons back to storage
+		spm.store(spm.getRoot().getPersons());
+	}
+
+	@Override
 	public void updatePerson(Person person) {
 		Optional<Person> personToBeUpdated = this.spm.getRoot().getPersons().stream().filter(p -> p.getId() == person.getId()).findFirst();
 		if(!personToBeUpdated.isPresent()){

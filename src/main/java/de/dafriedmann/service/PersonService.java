@@ -26,6 +26,12 @@ public interface PersonService {
 	public void removePerson(Person person);
 
 	/**
+	 * Remove a person from storage by a given id
+	 * @param id
+	 */
+	public void removePersonById(long id);
+
+	/**
 	 * Update a person
 	 * @param person
 	 */
