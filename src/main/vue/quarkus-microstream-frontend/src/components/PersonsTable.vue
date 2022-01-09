@@ -1,6 +1,6 @@
 <template>
-  <div class="container">
-    <button class="btn btn-primary" @click="addPerson">Add new person</button>
+  <div class="container" style="margin-top:1em">
+    <button class="btn btn-primary" @click="addPerson()">Add new person</button>
     <table class="table" name="personstable">
       <thead>
         <tr>
@@ -22,42 +22,48 @@
         </tr>
       </tbody>
     </table>
-
   <!-- Modal - Add Person -->
   <widget-container-modal />
   </div>
 </template>
 <script lang="ts">
 import { defineComponent } from 'vue'
-import {openModal} from "jenesius-vue-modal";
+import {closeModal, openModal} from "jenesius-vue-modal";
 import AddPersonModal from "./AddPersonModal.vue";
 import {container} from "jenesius-vue-modal";
 import {PersonService} from "../services/PersonService"
+import {Person} from '../data/Person';
+
+const SERVICE = new PersonService();
 
 export default defineComponent({
-  components: {WidgetContainerModal: container},
+  components: { WidgetContainerModal: container },
+  properties: { service: new PersonService() },
   data() {
     return {
-      persons: [],
-      showModal: false
-    }
-  },
-  methods: {
-    fetchData(){
-       let service = new PersonService();
-       service.getPersons().then(a => this.persons = a);
-    },
-    addPerson() {
-      openModal(AddPersonModal, {title: "Hello"})
-    },
-    removePerson(id : number) {
-      let service = new PersonService();
-      service.removePersonById(id);
-      this.$forceUpdate();
+      showModal: false,
+      persons: [] as Person[]
     }
   },
   mounted() {
-    this.fetchData()
+     this.fetchData();
   },
+  methods: {
+    async addPerson() {
+      let modal = await openModal(AddPersonModal);
+      modal.onclose = () => {
+          this.fetchData();
+          return true;
+      }
+    },
+    removePerson(id : number) {
+      SERVICE.removePersonById(id).then( res => {
+        this.persons = this.persons.filter(p => p.id !== id);
+      }).catch(err => console.error(err.status));
+    },
+    fetchData() {
+      SERVICE.getPersons().then(p => this.persons = p).catch(err => console.error(err));
+    }
+  }
 });
 </script>
