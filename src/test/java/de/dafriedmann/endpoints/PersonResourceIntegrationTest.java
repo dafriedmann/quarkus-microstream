@@ -1,137 +1,57 @@
 package de.dafriedmann.endpoints;
 
-import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Objects;
-
-import javax.inject.Inject;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import de.dafriedmann.data.Address;
-import de.dafriedmann.data.DataRoot;
 import de.dafriedmann.data.Person;
-import de.dafriedmann.data.SimplePersistenceManager;
+import de.dafriedmann.testsupport.AbstractMicrostreamTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.junit.jupiter.api.Test;
+
+import static io.restassured.RestAssured.given;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(PersonResource.class)
-public class PersonResourceIntegrationTest {
+class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
 
-	@Inject
-	SimplePersistenceManager spm;
+    @Test
+    void addPersonShouldResultInAddedPerson() throws Exception {
+        Person person = createSimplePerson("Max", "Mustermann");
+        given().contentType(ContentType.JSON).body(person).when().post("/add").then().statusCode(200);
+        assertEquals(1, spm.getRoot().getPersons().size());
+    }
 
-	@BeforeEach
-	public void resetMicrostreamDB() {
-		this.spm.setRoot(new DataRoot());
-		this.spm.storeRoot();
-	}
+    @Test
+    void removePersonShouldRemovePerson() {
+        Person personToBeDeleted = createAndStoreSimplePerson("Max", "Mustermann");
+        given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
+        assertTrue(spm.getRoot().getPersons().isEmpty());
+    }
 
-	@Test
-	public void addPersonShouldResultInAddedPerson() throws Exception {
-		Person me = new Person("Max", "Mustermann", LocalDate.now());
-		me.setId(1L);
+    @Test
+    void updatePersonShouldUpdatePerson() {
+        Person person = createAndStoreSimplePerson("Max", "Mustermann");
+        person.setName("Doe");
+        given().contentType(ContentType.JSON).body(person).when().post("/update").then().statusCode(200);
+        assertEquals("Doe", spm.getRoot().getPersonAt(0).getName());
+    }
 
-		given().contentType(ContentType.JSON).body(me).when().post("/add").then().statusCode(200);
-		assertEquals(1, spm.getRoot().getPersons().size());
-		assertEquals(me, spm.getRoot().getPersonAt(0));
-	}
+    @Test
+    void getPersonsShouldReturnAllPersons() {
+        createAndStoreSimplePerson("Max", "Mustermann");
+        createAndStoreSimplePerson("Jane", "Doe");
+        Person[] persons = given().contentType(ContentType.JSON).get("/all").as(Person[].class);
+        assertArrayEquals(persons, spm.getRoot().getPersons().toArray());
+    }
 
-	@Test
-	public void addPersonsWithNoContentShouldResultInBadRequest() throws Exception {
-		given().contentType(ContentType.JSON).body("/").when().post("/add").then().statusCode(400);
-	}
-
-	@Test
-	public void addPersonsShouldAddPersons() throws Exception {
-		List<Person> personsToStore = createDummyPersons(3);
-		given().contentType(ContentType.JSON).body(personsToStore).when().post("/add/batch").then().statusCode(200);
-		assertEquals(3, spm.getRoot().getPersons().size());
-	}
-
-	@Test
-	public void getPersonsShouldReturnAllPersons() {
-		createDummyPersons(3).forEach(p -> {
-			spm.getRoot().addPerson(p);
-		});
-		spm.store(spm.getRoot().getPersons());
-
-		Person[] givenPersons = given().contentType(ContentType.JSON).get("/all").as(Person[].class);
-		assertArrayEquals(givenPersons, spm.getRoot().getPersons().toArray());
-	}
-
-	@Test
-	public void findPersonByNameShouldReturnPerson() {
-		createDummyPersons(3).forEach(p -> {
-			spm.getRoot().addPerson(p);
-		});
-		spm.store(spm.getRoot().getPersons());
-
-		Person[] persons = given().contentType(ContentType.JSON).get("/findbyname?name=Mustermann_1")
-				.as(Person[].class);
-		assertEquals(1, persons.length);
-		assertEquals("Mustermann_1", persons[0].getName());
-	}
-
-	@Test
-	public void removePersonShouldResultInRemovedPerson() {
-		List<Person> persons = createDummyPersons(3);
-		persons.forEach(p -> {
-			spm.getRoot().addPerson(p);
-		});
-		spm.store(spm.getRoot().getPersons());
-
-		Person personToBeDeleted = persons.get(0);
-		given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
-
-        Collection<Person> storedPersons = spm.getRoot().getPersons();
-		assertFalse(storedPersons.stream().anyMatch(p-> p.equals(personToBeDeleted)));
-	}
-
-	@Test
-	public void updatePersonShouldResultInUpdatedPerson(){
-		Person person = new Person("Max", "Mustermann", LocalDate.now());
-		person.setId(1L);
-		spm.store(spm.getRoot().getPersons().add(person));
-
-		Person updatedPerson = new Person( "Max", "Mustermann2", LocalDate.now());
-		updatedPerson.setId(1L);
-		given().contentType(ContentType.JSON).body(updatedPerson).when().post("/update").then().statusCode(200);
-
-		Collection<Person> storedPersons = spm.getRoot().getPersons();
-		assertEquals(storedPersons.stream().filter(p->p.getId() == person.getId()).findFirst().get(), person);
-	}
-
-	@Test
-	public void updatePersonWithDifferentIDShouldResultInNoUpdate(){
-		Person person = new Person("Max", "Mustermann", LocalDate.now());
-		person.setId(1L);
-		spm.store(spm.getRoot().getPersons().add(person));
-
-		Person updatedPerson = new Person("Max", "Mustermann2", LocalDate.now());
-		updatedPerson.setId(2L);
-		given().contentType(ContentType.JSON).body(updatedPerson).when().post("/update").then().statusCode(404);
-	}
-
-	private List<Person> createDummyPersons(int count) {
-		List<Person> persons = new ArrayList<>();
-		Address address = new Address("Teststrasse", "10", "Teststadt", "0123456789");
-		for (int i = 1; i <= count; i++) {
-			Person person = new Person("Max", "Mustermann_" + i, LocalDate.now(), address);
-			person.setId(i);
-			persons.add(person);
-		}
-		return persons;
-	}
+    @Test
+    void findPersonByNameShouldReturnPerson() {
+        createAndStoreSimplePerson("Max", "Mustermann");
+        createAndStoreSimplePerson("Jane", "Doe");
+        Person[] persons = given().contentType(ContentType.JSON).get("/findbyname?name=Doe")
+                .as(Person[].class);
+        assertEquals(1, persons.length);
+        assertEquals("Doe", persons[0].getName());
+    }
 
 }

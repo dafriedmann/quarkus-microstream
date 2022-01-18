@@ -15,29 +15,27 @@ public class Person {
     }
 
     public Person(String prename, String name, LocalDate dateOfBirth) {
-        this. id = id;
         this.prename = prename;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
     }
 
     public Person(String prename, String name, LocalDate dateOfBirth, Address address) {
-        this.id = id;
         this.prename = prename;
         this.name = name;
         this.dateOfBirth = dateOfBirth;
         this.address = address;
     }
 
-	public long getId() {
-		return id;
-	}
+    public Long getPersonId() {
+        return id;
+    }
 
-	public void setId(long id) {
-		this.id = id;
-	}
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-	public String getPrename() {
+    public String getPrename() {
         return prename;
     }
 
@@ -74,22 +72,23 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return id == person.id && Objects.equals(prename, person.prename) && Objects.equals(name, person.name) && Objects.equals(dateOfBirth, person.dateOfBirth) && Objects.equals(address, person.address);
+        return this.getPersonId() == person.getPersonId() && Objects.equals(prename, person.prename) && Objects.equals(name, person.name) && Objects.equals(dateOfBirth, person.dateOfBirth) && Objects.equals(address, person.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, prename, name, dateOfBirth, address);
+        return Objects.hash(getPersonId(), prename, name, dateOfBirth, address);
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + id +
+                "id=" + getPersonId() +
                 ", prename='" + prename + '\'' +
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +
                 ", address=" + address +
                 '}';
     }
+
 }
