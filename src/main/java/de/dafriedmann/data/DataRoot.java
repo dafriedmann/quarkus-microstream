@@ -1,7 +1,6 @@
 package de.dafriedmann.data;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class DataRoot {
@@ -15,7 +14,7 @@ public class DataRoot {
         this.persons.add(p);
     }
 
-    public Collection<Person> getPersons() {
+    public List<Person> getPersons() {
         // must return the reference
         // in order to make it work with MicroStream
         return persons;

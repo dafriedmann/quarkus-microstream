@@ -1,15 +1,14 @@
 package de.dafriedmann.endpoints;
 
-import java.util.Collection;
-import java.util.NoSuchElementException;
+import de.dafriedmann.data.Person;
+import de.dafriedmann.service.PersonService;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-
-import de.dafriedmann.data.Person;
-import de.dafriedmann.service.PersonService;
+import java.util.Collection;
+import java.util.List;
 
 @Path("/persons")
 public class PersonResource {
@@ -43,19 +42,17 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePerson(Person person) {
-        try {
-            this.personService.updatePerson(person);
-        } catch (NoSuchElementException e) {
-            return Response.status(404).entity(person).build();
+        if (personService.updatePerson(person).isPresent()) {
+            return Response.status(200).build();
         }
-        return Response.status(200).entity(person).build();
+        return Response.status(404).build();
     }
 
     @POST
     @Path("/add/batch")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Person> addPerson(Collection<Person> persons) {
+    public List<Person> addPerson(List<Person> persons) {
         this.personService.addPersons(persons);
         return persons;
     }
@@ -68,11 +65,11 @@ public class PersonResource {
         this.personService.removePerson(person);
     }
 
-	@DELETE
-	@Path("/delete/{id}")
+    @DELETE
+    @Path("/delete/{id}")
     public Response removePersonById(@PathParam("id") long id) {
         this.personService.removePersonById(id);
-		return Response.status(200).build();
+        return Response.status(200).build();
     }
 
 }

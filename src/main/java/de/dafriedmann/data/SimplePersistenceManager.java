@@ -8,6 +8,7 @@ import one.microstream.storage.embedded.types.EmbeddedStorageManager;
 import org.eclipse.microprofile.config.inject.ConfigProperty;
 
 import javax.annotation.PostConstruct;
+import javax.annotation.PreDestroy;
 import javax.enterprise.context.ApplicationScoped;
 import java.nio.file.FileSystem;
 import java.nio.file.Paths;
@@ -25,7 +26,7 @@ public class SimplePersistenceManager {
     @ConfigProperty(name = "microstream.storage.type")
     String storageType;
 
-    EmbeddedStorageManager storageManager;
+    private EmbeddedStorageManager storageManager;
 
     private SimplePersistenceManager() {
     }
@@ -41,6 +42,11 @@ public class SimplePersistenceManager {
             // Use on disk file system
             this.storageManager = EmbeddedStorage.start(new DataRoot(), Paths.get(storageDir));
         }
+    }
+
+    @PreDestroy
+    void shutdown() {
+        storageManager.shutdown();
     }
 
     public void store(Object instance) {

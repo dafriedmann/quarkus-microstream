@@ -3,6 +3,7 @@ package de.dafriedmann.service;
 import de.dafriedmann.data.Person;
 
 import java.util.Collection;
+import java.util.List;
 import java.util.Optional;
 
 public interface PersonService {
@@ -17,9 +18,9 @@ public interface PersonService {
     /**
      * Add and persist new persons
      *
-     * @param person
+     * @param persons
      */
-    void addPersons(Collection<Person> persons);
+    void addPersons(List<Person> persons);
 
     /**
      * Remove person from storage
@@ -38,14 +39,14 @@ public interface PersonService {
      *
      * @param person
      */
-    void updatePerson(Person person);
+    Optional<Person> updatePerson(Person person);
 
     /**
      * Get all stored persons
      *
      * @return - a person collection
      */
-    Collection<Person> getPersons();
+    List<Person> getPersons();
 
     /**
      * Find person by name

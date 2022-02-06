@@ -27,7 +27,7 @@ public class Person {
         this.address = address;
     }
 
-    public Long getPersonId() {
+    public Long getId() {
         return id;
     }
 
@@ -72,18 +72,22 @@ public class Person {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Person person = (Person) o;
-        return this.getPersonId() == person.getPersonId() && Objects.equals(prename, person.prename) && Objects.equals(name, person.name) && Objects.equals(dateOfBirth, person.dateOfBirth) && Objects.equals(address, person.address);
+        return this.getId() == person.getId()
+                && Objects.equals(prename, person.prename)
+                && Objects.equals(name, person.name)
+                && Objects.equals(dateOfBirth, person.dateOfBirth)
+                && Objects.equals(address, person.address);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getPersonId(), prename, name, dateOfBirth, address);
+        return Objects.hash(getId(), prename, name, dateOfBirth, address);
     }
 
     @Override
     public String toString() {
         return "Person{" +
-                "id=" + getPersonId() +
+                "id=" + getId() +
                 ", prename='" + prename + '\'' +
                 ", name='" + name + '\'' +
                 ", dateOfBirth=" + dateOfBirth +

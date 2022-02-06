@@ -8,7 +8,6 @@ import org.junit.jupiter.api.AfterEach;
 
 import javax.inject.Inject;
 import java.time.LocalDate;
-import java.util.List;
 
 public abstract class AbstractMicrostreamTest {
 
@@ -21,9 +20,10 @@ public abstract class AbstractMicrostreamTest {
         this.spm.storeRoot();
     }
 
-    protected Person createAndStoreSimplePerson(String prename, String name) {
+    protected Person createAndStoreSimplePerson(long id, String prename, String name) {
         Person person = createSimplePerson(prename, name);
-        storePersons(person);
+        person.setId(id);
+        spm.getRoot().getPersons().add(person);
         return person;
     }
 
@@ -32,11 +32,6 @@ public abstract class AbstractMicrostreamTest {
         Address a = new Address("Teststrasse", "23a", "Berlin", "0123456789");
         person.setAddress(new Address());
         return person;
-    }
-
-    protected void storePersons(Person... persons) {
-        spm.getRoot().getPersons().addAll(List.of(persons));
-        spm.store(spm.getRoot().getPersons());
     }
 
 }

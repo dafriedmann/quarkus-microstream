@@ -30,7 +30,7 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
         assertEquals(spm.getRoot().getPersons().size(), 1);
         Person storedPerson = spm.getRoot().getPersonAt(0);
         assertEquals(person, storedPerson);
-        assertEquals(1L, storedPerson.getPersonId());
+        assertEquals(1L, storedPerson.getId());
     }
 
     @Test
@@ -42,15 +42,14 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
         service.addPersons(List.of(firstPerson, anotherPerson));
         // then
         assertTrue(spm.getRoot().getPersons().containsAll(List.of(firstPerson, anotherPerson)));
-        assertEquals(1L, spm.getRoot().getPersonAt(0).getPersonId());
-        assertEquals(2L, spm.getRoot().getPersonAt(1).getPersonId());
+        assertEquals(1L, spm.getRoot().getPersonAt(0).getId());
+        assertEquals(2L, spm.getRoot().getPersonAt(1).getId());
     }
 
     @Test
     void removePersonShouldRemovePersonFromStorage() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        storePersons(firstPerson);
+        Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         // when
         service.removePerson(firstPerson);
         // then
@@ -60,11 +59,8 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
     @Test
     void removePersonByIdShouldRemovePersonByIdFromStorage() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        Person anotherPerson = createSimplePerson("Max", "Mustermann");
-        firstPerson.setId(1L);
-        anotherPerson.setId(2L);
-        storePersons(firstPerson, anotherPerson);
+        createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        Person anotherPerson = createAndStoreSimplePerson(2L, "Max", "Mustermann");
         // when
         service.removePersonById(1L);
         // then
@@ -75,24 +71,22 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
     @Test
     void updatePersonShouldUpdatePerson() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        storePersons(firstPerson);
-        Person personToBeUpdated = spm.getRoot().getPersonAt(0);
+        Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         // when
-        personToBeUpdated.setName("Doe");
+        firstPerson.setName("Doe");
         service.updatePerson(firstPerson);
         // then
+        assertEquals(firstPerson.getId(), 1L);
         assertEquals("Doe", spm.getRoot().getPersonAt(0).getName());
     }
 
     @Test
     void getPersonsShouldReturnAllPersonsFromStorage() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        Person anotherPerson = createSimplePerson("Jane", "Doe");
-        storePersons(firstPerson, anotherPerson);
+        Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        Person anotherPerson = createAndStoreSimplePerson(2L, "Jane", "Doe");
         // when
-        Collection<Person> storedPersons = service.getPersons();
+        List<Person> storedPersons = service.getPersons();
         // then
         assertTrue(storedPersons.containsAll(List.of(firstPerson, anotherPerson)));
     }
@@ -100,11 +94,8 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
     @Test
     void getPersonByIdShouldReturnPersonByIdFromStorage() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        Person anotherPerson = createSimplePerson("Jane", "Doe");
-        firstPerson.setId(1L);
-        anotherPerson.setId(2L);
-        storePersons(firstPerson, anotherPerson);
+        Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        createAndStoreSimplePerson(2L, "Jane", "Doe");
         // when
         Optional<Person> foundPerson = service.getPersonById(1L);
         // then
@@ -115,11 +106,8 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
     @Test
     void findPersonByNameShouldReturnPersonWithMatchingNameFromStorage() {
         // given
-        Person firstPerson = createSimplePerson("Max", "Mustermann");
-        Person anotherPerson = createSimplePerson("Jane", "Doe");
-        firstPerson.setId(1L);
-        anotherPerson.setId(2L);
-        storePersons(firstPerson, anotherPerson);
+        Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        createAndStoreSimplePerson(2L, "Jane", "Doe");
         // when
         Collection<Person> persons = service.findPersonByName("Mustermann");
         // then
