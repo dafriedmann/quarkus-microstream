@@ -10,15 +10,27 @@ services:
     networks:
       - quarkus-microstream
     
-  quarkus-microstream-frontend:
-    container_name: "quarkus-microstream-frontend"
-    build:
-      context: ./src/main/vue/quarkus-microstream-frontend
-      dockerfile: Dockerfile
+  neo4j:
+    container_name: "neo4j-analytics"
     ports:
-      - 80:80
+        - '7474:7474'
+        - '7687:7687'
+    image: neo4j:4.4
+    environment:
+      - NEO4J_AUTH=neo4j/test
     networks:
       - quarkus-microstream
+
+  # quarkus-microstream-frontend:
+  #   container_name: "quarkus-microstream-frontend"
+  #   build:
+  #     context: ./src/main/vue/quarkus-microstream-frontend
+  #     dockerfile: Dockerfile
+  #   ports:
+  #     - 80:80
+  #   networks:
+  #    - quarkus-microstream
+
 
 networks:
   quarkus-microstream:
