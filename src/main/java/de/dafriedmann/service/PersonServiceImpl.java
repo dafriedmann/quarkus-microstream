@@ -1,6 +1,7 @@
 package de.dafriedmann.service;
 
 import com.google.common.base.Preconditions;
+import de.dafriedmann.analytics.AnalyticsRecorder;
 import de.dafriedmann.data.Person;
 import de.dafriedmann.data.PersonRepository;
 import io.quarkus.arc.Lock;
@@ -19,9 +20,13 @@ public class PersonServiceImpl implements PersonService {
     @Inject
     PersonRepository personRepository;
 
+    @Inject
+    AnalyticsRecorder analyticsRecorder;
+
     @Override
     public void addPerson(Person person) {
         personRepository.storePerson(person);
+        analyticsRecorder.recordPerson(person.getId(), person.getAddress());
     }
 
     @Override
