@@ -18,4 +18,9 @@ public class AnalyticsRecorderStub extends AnalyticsRecorder {
     public void recordPerson(long personId, Address address) {
         // nothing to do in test here
     }
+
+    @Override
+    public void deletePerson(long personId) {
+        // nothing to do in test here
+    }
 }

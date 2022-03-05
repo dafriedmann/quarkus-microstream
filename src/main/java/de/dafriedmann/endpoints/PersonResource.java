@@ -62,13 +62,13 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void removePerson(Person person) {
-        this.personService.removePerson(person);
+        this.personService.deletePerson(person);
     }
 
     @DELETE
     @Path("/delete/{id}")
     public Response removePersonById(@PathParam("id") long id) {
-        this.personService.removePersonById(id);
+        this.personService.deletePersonById(id);
         return Response.status(200).build();
     }
 

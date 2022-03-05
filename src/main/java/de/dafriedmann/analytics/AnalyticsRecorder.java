@@ -38,4 +38,13 @@ public class AnalyticsRecorder {
         }
     }
 
+    public void deletePerson(long personId) {
+        try (Transaction tx = driver.session().beginTransaction()) {
+            tx.run("MATCH (p:Person {id: $id}) DETACH DELETE p",
+                    Values.parameters("id", personId)
+            );
+            tx.commit();
+        }
+    }
+
 }

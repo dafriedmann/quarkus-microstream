@@ -10,7 +10,6 @@ import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 
 @Lock
@@ -40,16 +39,17 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public void removePerson(Person person) {
-        personRepository.removePerson(person);
+    public boolean deletePerson(Person person) {
+        return personRepository.removePerson(person);
     }
 
     @Override
-    public void removePersonById(long id) {
-        boolean isRemoved = personRepository.removePersonById(id);
-        if (!isRemoved) {
-            throw new NoSuchElementException("Person not found in storage");
+    public boolean deletePersonById(long id) {
+        boolean isDeleted = personRepository.removePersonById(id);
+        if (isDeleted) {
+            analyticsRecorder.deletePerson(id);
         }
+        return isDeleted;
     }
 
     @Override

@@ -23,16 +23,16 @@ public interface PersonService {
     void addPersons(List<Person> persons);
 
     /**
-     * Remove person from storage
+     * Delete person from storage
      */
-    void removePerson(Person person);
+    boolean deletePerson(Person person);
 
     /**
-     * Remove a person from storage by a given id
+     * Delete person from storage by id
      *
      * @param id
      */
-    void removePersonById(long id);
+    boolean deletePersonById(long id);
 
     /**
      * Update a person

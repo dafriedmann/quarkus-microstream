@@ -47,23 +47,24 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
     }
 
     @Test
-    void removePersonShouldRemovePersonFromStorage() {
+    void deletePersonShouldRemovePersonFromStorage() {
         // given
         Person firstPerson = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         // when
-        service.removePerson(firstPerson);
+        boolean isDeleted = service.deletePerson(firstPerson);
         // then
-        assertTrue(spm.getRoot().getPersons().isEmpty());
+        assertTrue(isDeleted);
     }
 
     @Test
-    void removePersonByIdShouldRemovePersonByIdFromStorage() {
+    void deletePersonByIdShouldRemovePersonByIdFromStorage() {
         // given
         createAndStoreSimplePerson(1L, "Max", "Mustermann");
         Person anotherPerson = createAndStoreSimplePerson(2L, "Max", "Mustermann");
         // when
-        service.removePersonById(1L);
+        boolean isDeleted = service.deletePersonById(1L);
         // then
+        assertTrue(isDeleted);
         assertEquals(1, spm.getRoot().getPersons().size());
         assertEquals(anotherPerson, spm.getRoot().getPersonAt(0));
     }
