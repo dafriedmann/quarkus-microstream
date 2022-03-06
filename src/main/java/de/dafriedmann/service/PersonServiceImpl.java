@@ -1,5 +1,9 @@
 package de.dafriedmann.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import com.google.common.base.Preconditions;
 import de.dafriedmann.analytics.AnalyticsRecorder;
 import de.dafriedmann.data.Person;
@@ -8,6 +12,7 @@ import io.quarkus.arc.Lock;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 
@@ -74,4 +79,22 @@ public class PersonServiceImpl implements PersonService {
         return personRepository.getPersonById(id);
     }
 
+    @Override
+    public List<Person> importDemoPersons() {
+        try {
+            // simple import of demo data
+            ObjectMapper mapper = new ObjectMapper();
+            mapper.registerModule(new JavaTimeModule());
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            List<Person> persons = mapper.readValue(this.getClass().getClassLoader().getResourceAsStream("demodata.json").readAllBytes(), new TypeReference<List<Person>>() {
+            });
+
+            addPersons(persons);
+            return persons;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // should not happen in this demo
+        throw new RuntimeException("Import of demo data failed.");
+    }
 }

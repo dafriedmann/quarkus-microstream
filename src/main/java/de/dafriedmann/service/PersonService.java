@@ -71,4 +71,11 @@ public interface PersonService {
      */
     Optional<Person> getPersonById(long id);
 
+    /**
+     * Simple import of some demo persons
+     *
+     * @return imported persons
+     */
+    List<Person> importDemoPersons();
+
 }

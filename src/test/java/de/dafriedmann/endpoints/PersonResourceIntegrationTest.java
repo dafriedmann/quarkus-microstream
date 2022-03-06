@@ -9,8 +9,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
-import static org.junit.jupiter.api.Assertions.assertArrayEquals;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @QuarkusTest
 @TestHTTPEndpoint(PersonResource.class)
@@ -65,6 +64,12 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
         Person[] persons = given().contentType(ContentType.JSON).get("/findbycity?city=Munich")
                 .as(Person[].class);
         assertEquals(2, persons.length);
+    }
+
+    @Test
+    void importDemoDataShouldImportData() {
+        given().get("/import/demodata");
+        assertTrue(spm.getRoot().getPersons().size() > 0);
     }
 
 }

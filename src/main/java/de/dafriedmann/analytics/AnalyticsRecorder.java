@@ -11,7 +11,7 @@ import javax.inject.Inject;
 
 /**
  * Simple noe4j analytics recorder
- * Record data on store, delete data on delete
+ * One could use OGM however this is just a small demo ;)
  */
 @Lock
 @ApplicationScoped

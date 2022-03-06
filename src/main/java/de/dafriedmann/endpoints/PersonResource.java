@@ -42,7 +42,7 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Person addPerson(Person person) {
-        this.personService.addPerson(person);
+        personService.addPerson(person);
         return person;
     }
 
@@ -62,8 +62,15 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public List<Person> addPerson(List<Person> persons) {
-        this.personService.addPersons(persons);
+        personService.addPersons(persons);
         return persons;
+    }
+
+    @GET
+    @Path("/import/demodata")
+    @Produces(MediaType.APPLICATION_JSON)
+    public List<Person> importDemo() {
+        return personService.importDemoPersons();
     }
 
     @DELETE
@@ -77,7 +84,7 @@ public class PersonResource {
     @DELETE
     @Path("/delete/{id}")
     public Response removePersonById(@PathParam("id") long id) {
-        this.personService.deletePersonById(id);
+        personService.deletePersonById(id);
         return Response.status(200).build();
     }
 

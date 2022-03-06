@@ -39,6 +39,10 @@
             <artifactId>quarkus-resteasy-jackson</artifactId>
         </dependency>
         <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
+        <dependency>
             <groupId>one.microstream</groupId>
             <artifactId>microstream-storage-embedded</artifactId>
             <version>05.00.02-MS-GA</version>
