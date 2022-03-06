@@ -18,14 +18,23 @@ public class PersonResource {
 
     @GET
     @Path("/all")
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Person> getAllPersons() {
         return this.personService.getPersons();
     }
 
     @GET
     @Path("/findbyname")
+    @Produces(MediaType.APPLICATION_JSON)
     public Collection<Person> findPersonsByName(@QueryParam("name") String name) {
-        return this.personService.findPersonByName(name);
+        return personService.findPersonByName(name);
+    }
+
+    @GET
+    @Path("/findbycity")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Collection<Person> findPersonsLivingInCity(@QueryParam("city") String city) {
+        return personService.findPersonLivingInCity(city);
     }
 
     @POST

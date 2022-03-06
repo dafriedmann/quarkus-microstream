@@ -2,7 +2,6 @@ package de.dafriedmann.service;
 
 import de.dafriedmann.data.Person;
 
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -52,9 +51,17 @@ public interface PersonService {
      * Find person by name
      *
      * @param name
-     * @return a person collection filtered by name
+     * @return a person list filtered by name
      */
-    Collection<Person> findPersonByName(String name);
+    List<Person> findPersonByName(String name);
+
+    /**
+     * Find all persons living in a given city
+     *
+     * @param city - name of the city
+     * @return a person list
+     */
+    List<Person> findPersonLivingInCity(String city);
 
     /**
      * Find a person by id

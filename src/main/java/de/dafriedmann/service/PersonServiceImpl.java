@@ -8,7 +8,6 @@ import io.quarkus.arc.Lock;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -59,9 +58,15 @@ public class PersonServiceImpl implements PersonService {
     }
 
     @Override
-    public Collection<Person> findPersonByName(String name) {
+    public List<Person> findPersonByName(String name) {
         Preconditions.checkArgument(name != null, "Name should not be null");
         return personRepository.findPersonByName(name);
+    }
+
+    @Override
+    public List<Person> findPersonLivingInCity(String city) {
+        Preconditions.checkArgument(city != null, "City should not be null");
+        return personRepository.findPersonsLivingInCity(city);
     }
 
     @Override

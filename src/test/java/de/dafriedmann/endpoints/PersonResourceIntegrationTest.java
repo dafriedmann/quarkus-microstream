@@ -1,5 +1,6 @@
 package de.dafriedmann.endpoints;
 
+import de.dafriedmann.data.Address;
 import de.dafriedmann.data.Person;
 import de.dafriedmann.testsupport.AbstractMicrostreamTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
@@ -22,7 +23,7 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
     }
 
     @Test
-    void removePersonShouldRemovePerson() {
+    void deletePersonShouldRemovePerson() {
         Person personToBeDeleted = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
     }
@@ -50,6 +51,20 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
                 .as(Person[].class);
         assertEquals(1, persons.length);
         assertEquals("Doe", persons[0].getName());
+    }
+
+    @Test
+    void findPersonByCityShouldReturnPersons() {
+        Address munich = new Address();
+        munich.setCity("Munich");
+
+        createAndStoreSimplePersonWithAddress(1L, "Max", "Mustermann", munich);
+        createAndStoreSimplePersonWithAddress(2L, "Jane", "Doe", munich);
+        createAndStoreSimplePersonWithAddress(3L, "John", "Doe", new Address());
+
+        Person[] persons = given().contentType(ContentType.JSON).get("/findbycity?city=Munich")
+                .as(Person[].class);
+        assertEquals(2, persons.length);
     }
 
 }

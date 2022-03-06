@@ -1,5 +1,6 @@
 package de.dafriedmann.service;
 
+import de.dafriedmann.data.Address;
 import de.dafriedmann.data.Person;
 import de.dafriedmann.testsupport.AbstractMicrostreamTest;
 import io.quarkus.test.junit.QuarkusTest;
@@ -114,6 +115,23 @@ public class PersonServiceIntegrationTest extends AbstractMicrostreamTest {
         // then
         assertEquals(1, persons.size());
         assertEquals(firstPerson, persons.stream().findFirst().get());
+    }
+
+    @Test
+    void findPersonByCityShouldReturnPersonLivingInCityFromStorage() {
+        // given
+        Address munich = new Address();
+        munich.setCity("Munich");
+        Address berlin = new Address();
+        berlin.setCity("Berlin");
+
+        createAndStoreSimplePersonWithAddress(1L, "Max", "Mustermann", munich);
+        createAndStoreSimplePersonWithAddress(2L, "Jane", "Doe", munich);
+        createAndStoreSimplePersonWithAddress(3L, "John", "Doe", berlin);
+        // when
+        List<Person> persons = service.findPersonLivingInCity("Munich");
+        // then
+        assertEquals(2, persons.size());
     }
 
 }

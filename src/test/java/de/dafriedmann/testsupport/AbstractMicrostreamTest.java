@@ -24,6 +24,16 @@ public abstract class AbstractMicrostreamTest {
         Person person = createSimplePerson(prename, name);
         person.setId(id);
         spm.getRoot().getPersons().add(person);
+        spm.store(spm.getRoot().getPersons());
+        return person;
+    }
+
+    protected Person createAndStoreSimplePersonWithAddress(long id, String prename, String name, Address address) {
+        Person person = new Person(prename, name, LocalDate.now());
+        person.setAddress(address);
+        person.setId(id);
+        spm.getRoot().getPersons().add(person);
+        spm.store(spm.getRoot().getPersons());
         return person;
     }
 

@@ -75,7 +75,14 @@ public class PersonRepository {
                 .collect(Collectors.toList());
     }
 
-    private long getId() {
+    public List<Person> findPersonsLivingInCity(String city) {
+        return spm.getRoot().getPersons().stream()
+                .filter(p -> p.getAddress() != null && p.getAddress().getCity() != null)
+                .filter(p -> p.getAddress().getCity().equalsIgnoreCase(city))
+                .collect(Collectors.toList());
+    }
+
+    private synchronized long getId() {
         long lastId = spm.getRoot().getPersons().stream()
                 .map(Person::getId)
                 .filter(Objects::nonNull)

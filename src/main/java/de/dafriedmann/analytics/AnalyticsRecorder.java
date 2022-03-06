@@ -9,6 +9,10 @@ import org.neo4j.driver.Values;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
+/**
+ * Simple noe4j analytics recorder
+ * Record data on store, delete data on delete
+ */
 @Lock
 @ApplicationScoped
 public class AnalyticsRecorder {
