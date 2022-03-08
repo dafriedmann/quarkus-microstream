@@ -15,6 +15,7 @@ import javax.inject.Inject;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Lock
 @ApplicationScoped
@@ -90,6 +91,7 @@ public class PersonServiceImpl implements PersonService {
             });
 
             addPersons(persons);
+            analyticsRecorder.recordPersons(persons.stream().collect(Collectors.toMap(Person::getId, Person::getAddress)));
             return persons;
         } catch (IOException e) {
             e.printStackTrace();

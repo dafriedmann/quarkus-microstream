@@ -8,6 +8,8 @@ import org.neo4j.driver.Values;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import java.util.Map;
+import java.util.Map.Entry;
 
 /**
  * Simple noe4j analytics recorder
@@ -41,6 +43,28 @@ public class AnalyticsRecorder {
             tx.commit();
         }
     }
+
+
+    public void recordPersons(Map<Long, Address> personsWithAddress) {
+        try (Transaction tx = driver.session().beginTransaction()) {
+            for (Entry<Long, Address> personWithAddress : personsWithAddress.entrySet()) {
+                if (personWithAddress.getValue() != null && personWithAddress.getValue().getCity() != null) {
+                    String city = personWithAddress.getValue().getCity();
+                    tx.run("MERGE (p:Person {id: $id})" +
+                                    "MERGE(c:City {name:$city})" +
+                                    "MERGE (p)-[:RESIDESIN]->(c)",
+                            Values.parameters(
+                                    "id", personWithAddress.getKey(),
+                                    "city", city)
+                    );
+                } else {
+                    tx.run("CREATE (f:Person {id: $id}) RETURN f", Values.parameters("id", personWithAddress.getKey()));
+                }
+            }
+            tx.commit();
+        }
+    }
+
 
     public void deletePerson(long personId) {
         try (Transaction tx = driver.session().beginTransaction()) {

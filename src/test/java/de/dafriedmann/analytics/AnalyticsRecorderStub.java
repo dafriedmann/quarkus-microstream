@@ -5,6 +5,7 @@ import io.quarkus.arc.Priority;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Alternative;
+import java.util.Map;
 
 /**
  * Stub for Analytics: Disable in tests
@@ -21,6 +22,11 @@ public class AnalyticsRecorderStub extends AnalyticsRecorder {
 
     @Override
     public void deletePerson(long personId) {
+        // nothing to do in test here
+    }
+
+    @Override
+    public void recordPersons(Map<Long, Address> personsWithAddress) {
         // nothing to do in test here
     }
 }

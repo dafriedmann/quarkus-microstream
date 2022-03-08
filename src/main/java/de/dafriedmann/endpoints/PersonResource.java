@@ -24,14 +24,14 @@ public class PersonResource {
     }
 
     @GET
-    @Path("/findbyname")
+    @Path("/findby")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Person> findPersonsByName(@QueryParam("name") String name) {
         return personService.findPersonByName(name);
     }
 
     @GET
-    @Path("/findbycity")
+    @Path("/findby")
     @Produces(MediaType.APPLICATION_JSON)
     public Collection<Person> findPersonsLivingInCity(@QueryParam("city") String city) {
         return personService.findPersonLivingInCity(city);

@@ -46,7 +46,7 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
     void findPersonByNameShouldReturnPerson() {
         createAndStoreSimplePerson(1L, "Max", "Mustermann");
         createAndStoreSimplePerson(2L, "Jane", "Doe");
-        Person[] persons = given().contentType(ContentType.JSON).get("/findbyname?name=Doe")
+        Person[] persons = given().contentType(ContentType.JSON).get("/findby?name=Doe")
                 .as(Person[].class);
         assertEquals(1, persons.length);
         assertEquals("Doe", persons[0].getName());
@@ -61,7 +61,7 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
         createAndStoreSimplePersonWithAddress(2L, "Jane", "Doe", munich);
         createAndStoreSimplePersonWithAddress(3L, "John", "Doe", new Address());
 
-        Person[] persons = given().contentType(ContentType.JSON).get("/findbycity?city=Munich")
+        Person[] persons = given().contentType(ContentType.JSON).get("/findby?city=Munich")
                 .as(Person[].class);
         assertEquals(2, persons.length);
     }
