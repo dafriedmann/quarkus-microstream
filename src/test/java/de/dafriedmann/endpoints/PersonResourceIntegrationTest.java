@@ -6,6 +6,7 @@ import de.dafriedmann.testsupport.AbstractMicrostreamTest;
 import io.quarkus.test.common.http.TestHTTPEndpoint;
 import io.quarkus.test.junit.QuarkusTest;
 import io.restassured.http.ContentType;
+import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
@@ -24,21 +25,22 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
     @Test
     void deletePersonShouldRemovePerson() {
         Person personToBeDeleted = createAndStoreSimplePerson(1L, "Max", "Mustermann");
-        given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(204);
+        given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(HttpStatus.SC_NO_CONTENT);
     }
 
     @Test
     void updatePersonShouldUpdatePerson() {
         Person person = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         person.setName("Doe");
-        given().contentType(ContentType.JSON).body(person).when().post("/update").then().statusCode(200);
+        given().contentType(ContentType.JSON).body(person).when().post("/update").then().statusCode(HttpStatus.SC_OK);
     }
 
     @Test
-    void getPersonsShouldReturnAllPersons() {
+    void getAllPersonsShouldReturnAllPersons() {
         createAndStoreSimplePerson(1L, "Max", "Mustermann");
         createAndStoreSimplePerson(2L, "Jane", "Doe");
-        Person[] persons = given().contentType(ContentType.JSON).get("/all").as(Person[].class);
+        Person[] persons = given().contentType(ContentType.JSON).get("/all").then()
+                .assertThat().statusCode(HttpStatus.SC_OK).extract().as(Person[].class);
         assertArrayEquals(persons, spm.getRoot().getPersons().toArray());
     }
 
@@ -46,8 +48,9 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
     void findPersonByNameShouldReturnPerson() {
         createAndStoreSimplePerson(1L, "Max", "Mustermann");
         createAndStoreSimplePerson(2L, "Jane", "Doe");
-        Person[] persons = given().contentType(ContentType.JSON).get("/findby?name=Doe")
-                .as(Person[].class);
+        Person[] persons = given().contentType(ContentType.JSON).get("/findbyname/Doe").then()
+                .assertThat().statusCode(HttpStatus.SC_OK).extract().as(Person[].class);
+
         assertEquals(1, persons.length);
         assertEquals("Doe", persons[0].getName());
     }
@@ -61,8 +64,8 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
         createAndStoreSimplePersonWithAddress(2L, "Jane", "Doe", munich);
         createAndStoreSimplePersonWithAddress(3L, "John", "Doe", new Address());
 
-        Person[] persons = given().contentType(ContentType.JSON).get("/findby?city=Munich")
-                .as(Person[].class);
+        Person[] persons = given().contentType(ContentType.JSON).get("/findbycity/Munich").then()
+                .assertThat().statusCode(HttpStatus.SC_OK).extract().as(Person[].class);
         assertEquals(2, persons.length);
     }
 

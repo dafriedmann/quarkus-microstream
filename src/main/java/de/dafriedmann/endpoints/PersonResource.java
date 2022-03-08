@@ -19,31 +19,40 @@ public class PersonResource {
     @GET
     @Path("/all")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Person> getAllPersons() {
-        return this.personService.getPersons();
+    public Response getAllPersons() {
+        Collection<Person> persons = this.personService.getPersons();
+        return Response.ok(persons).build();
     }
 
     @GET
-    @Path("/findby")
+    @Path("/findbyname/{name}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Person> findPersonsByName(@QueryParam("name") String name) {
-        return personService.findPersonByName(name);
+    public Response findPersonsByName(@PathParam("name") String name) {
+        List<Person> persons = personService.findPersonByName(name);
+        if (persons.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.ok(persons).build();
     }
 
     @GET
-    @Path("/findby")
+    @Path("/findbycity/{city}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Collection<Person> findPersonsLivingInCity(@QueryParam("city") String city) {
-        return personService.findPersonLivingInCity(city);
+    public Response findPersonsByArg(@PathParam("city") String city) {
+        List<Person> persons = personService.findPersonLivingInCity(city);
+        if (persons.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.ok(persons).build();
     }
 
     @POST
     @Path("/add")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Person addPerson(Person person) {
+    public Response addPerson(Person person) {
         personService.addPerson(person);
-        return person;
+        return Response.ok(person).build();
     }
 
     @POST
@@ -52,25 +61,29 @@ public class PersonResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePerson(Person person) {
         if (personService.updatePerson(person).isPresent()) {
-            return Response.status(200).build();
+            return Response.ok().build();
         }
-        return Response.status(404).build();
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
     @Path("/add/batch")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> addPerson(List<Person> persons) {
+    public Response addPerson(List<Person> persons) {
         personService.addPersons(persons);
-        return persons;
+        return Response.ok().build();
     }
 
     @GET
     @Path("/import/demodata")
     @Produces(MediaType.APPLICATION_JSON)
-    public List<Person> importDemo() {
-        return personService.importDemoPersons();
+    public Response importDemo() {
+        List<Person> persons = personService.importDemoPersons();
+        if (persons.isEmpty()) {
+            return Response.noContent().build();
+        }
+        return Response.ok(personService.importDemoPersons()).build();
     }
 
     @DELETE
@@ -78,14 +91,18 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public void removePerson(Person person) {
+        // todo return status
         this.personService.deletePerson(person);
     }
 
     @DELETE
     @Path("/delete/{id}")
     public Response removePersonById(@PathParam("id") long id) {
-        personService.deletePersonById(id);
-        return Response.status(200).build();
+        boolean isRemoved = personService.deletePersonById(id);
+        if (isRemoved) {
+            return Response.ok().build();
+        }
+        return Response.status(Response.Status.NOT_FOUND).build();
     }
 
 }
