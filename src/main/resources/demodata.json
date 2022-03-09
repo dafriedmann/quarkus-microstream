@@ -118,5 +118,77 @@
       "city": "Dresden",
       "phone": "0351 408194"
     }
+  },
+  {
+    "prename": "Ulrich",
+    "name": "Beckenbauer",
+    "dateOfBirth": "1996-02-09",
+    "address": {
+      "street": "Rudower Chaussee",
+      "houseNumber": "35",
+      "zipcode": "96052",
+      "city": "Bamberg",
+      "phone": "0951 932517"
+    }
+  },
+  {
+    "prename": "Leah",
+    "name": "Pfeiffer",
+    "dateOfBirth": "1975-08-25",
+    "address": {
+      "street": "Park Str.",
+      "houseNumber": "17",
+      "zipcode": "50667",
+      "city": "Köln",
+      "phone": "0212 792408"
+    }
+  },
+  {
+    "prename": "Paul",
+    "name": "Burger",
+    "dateOfBirth": "1989-12-16",
+    "address": {
+      "street": "Hochstrasse",
+      "houseNumber": "65",
+      "zipcode": "10115",
+      "city": "Berlin",
+      "phone": "033635 7161"
+    }
+  },
+  {
+    "prename": "Brigitte",
+    "name": "Beyer",
+    "dateOfBirth": "1992-04-24",
+    "address": {
+      "street": "Hochstrasse",
+      "houseNumber": "65",
+      "zipcode": "10115",
+      "city": "Berlin",
+      "phone": "07152 183762"
+    }
+  },
+  {
+    "prename": "Phillipp",
+    "name": "Kuefer",
+    "dateOfBirth": "1994-03-12",
+    "address": {
+      "street": "Stresemannstr.",
+      "houseNumber": "31",
+      "zipcode": "96052",
+      "city": "Bamberg",
+      "phone": "06851 518338"
+    }
+  },
+  {
+    "prename": "Mandy",
+    "name": "Kaiser",
+    "dateOfBirth": "1952-08-08",
+    "address": {
+      "street": "Kurfuerstendamm",
+      "houseNumber": "32",
+      "zipcode": "96052",
+      "city": "München",
+      "phone": "089 454430"
+    }
   }
 ]
