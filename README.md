@@ -44,4 +44,4 @@ See the corresponding [issue](https://github.com/microstream-one/microstream/iss
 
 ## Notes on GraalVM: Native Image
 
-see README-graalvm.md
+see [README-graalvm.md](README-graalvm.md)
