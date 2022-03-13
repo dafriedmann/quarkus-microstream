@@ -1,0 +1,62 @@
+[
+  {
+    "prename": "Karin",
+    "name": "Lehmann",
+    "dateOfBirth": "1979-11-10",
+    "address": {
+      "street": "Kieler Strasse",
+      "phone": "03594 370467",
+      "houseNumber": "43",
+      "zipcode": "10318",
+      "city": "Berlin"
+    }
+  },
+  {
+    "prename": "Jonas",
+    "name": "Berg",
+    "dateOfBirth": "1982-01-03",
+    "address": {
+      "phone": "04135 373145",
+      "city": "Berlin",
+      "zipcode": "10407",
+      "street": "Heinrich Heine Platz",
+      "houseNumber": "87"
+    }
+  },
+  {
+    "prename": "Uwe",
+    "name": "Gerber",
+    "dateOfBirth": "1963-03-04",
+    "address": {
+      "street": "Inge Beisheim Platz",
+      "zipcode": "10407",
+      "houseNumber": "37",
+      "city": "Berlin",
+      "phone": "0711 885702"
+    }
+  },
+  {
+    "prename": "Uta",
+    "name": "Abendroth",
+    "dateOfBirth": "1972-10-11",
+    "address": {
+      "phone": "06341 771821",
+      "zipcode": "10555",
+      "city": "Berlin",
+      "houseNumber": "27",
+      "street": "Ollenhauer Str."
+    }
+  },
+  {
+    "prename": "Sabine",
+    "name": "Wirtz",
+    "dateOfBirth": "1997-03-10",
+    "address": {
+      "houseNumber": "75",
+      "zipcode": "12045",
+      "phone": "02626 598333",
+      "city": "Berlin",
+      "street": "Brandenburgische Strasse"
+    }
+  }
+]

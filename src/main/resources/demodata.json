@@ -190,5 +190,197 @@
       "city": "München",
       "phone": "089 454430"
     }
+  },
+  {
+    "prename": "Stefanie ",
+    "name": "Ebersbacher",
+    "dateOfBirth": "1994-08-04",
+    "address": {
+      "street": "Alt-Moabit",
+      "city": "München",
+      "houseNumber": "20",
+      "phone": "03381 812193",
+      "zipcode": "80634"
+    }
+  },
+  {
+    "prename": "Nadine",
+    "name": "Hofmann",
+    "dateOfBirth": "1980-05-08",
+    "address": {
+      "phone": "08303 873172",
+      "street": "Heiligengeistbrücke",
+      "city": "München",
+      "zipcode": "80639",
+      "houseNumber": "76"
+    }
+  },
+  {
+    "prename": "Sabine",
+    "name": "Baer",
+    "dateOfBirth": "2003-03-01",
+    "address": {
+      "city": "München",
+      "street": "Alt Reinickendorf",
+      "houseNumber": "45",
+      "phone": "08463 713556",
+      "zipcode": "80637"
+    }
+  },
+  {
+    "prename": "Yvonne",
+    "name": "Vogt",
+    "dateOfBirth": "1986-04-06",
+    "address": {
+      "city": "München",
+      "zipcode": "80939",
+      "houseNumber": "81",
+      "phone": "06563 927431",
+      "street": "Rankestraße"
+    }
+  },
+  {
+    "prename": "Sarah",
+    "name": "Eiffel",
+    "dateOfBirth": "1989-02-06",
+    "address": {
+      "city": "München",
+      "zipcode": "81248",
+      "street": "Rudower Strasse",
+      "phone": "040 626544",
+      "houseNumber": "77"
+    }
+  },
+  {
+    "prename": "Luca",
+    "name": "Frankfurter",
+    "dateOfBirth": "1976-06-06",
+    "address": {
+      "houseNumber": "63",
+      "city": "München",
+      "street": "Los-Angeles-Platz",
+      "zipcode": "81248",
+      "phone": "03475 786285"
+    }
+  },
+  {
+    "prename": "Thomas",
+    "name": "Foerster",
+    "dateOfBirth": "1982-04-08",
+    "address": {
+      "city": "München",
+      "phone": "06562 975240",
+      "houseNumber": "34",
+      "zipcode": "81825",
+      "street": "Flotowstr."
+    }
+  },
+  {
+    "prename": "Karolin",
+    "name": "Lehrer",
+    "dateOfBirth": "1962-11-02",
+    "address": {
+      "phone": "05933 334926",
+      "city": "München",
+      "street": "Rudower Strasse",
+      "houseNumber": "59",
+      "zipcode": "81929"
+    }
+  },
+  {
+    "prename": "Ulrich",
+    "name": "Schmid",
+    "dateOfBirth": "1954-01-04",
+    "address": {
+      "street": "Lietzenburger Straße",
+      "city": "München",
+      "zipcode": "85764",
+      "houseNumber": "81",
+      "phone": "05033 631034"
+    }
+  },
+  {
+    "prename": "Christin",
+    "name": "Bach",
+    "dateOfBirth": "1970-01-09",
+    "address": {
+      "city": "München",
+      "phone": "0211 235001",
+      "street": "Luckenwalder Strasse",
+      "zipcode": "81241",
+      "houseNumber": "76"
+    }
+  },
+  {
+    "prename": "Marco",
+    "name": "Ackermann",
+    "dateOfBirth": "1997-04-06",
+    "address": {
+      "zipcode": "85051",
+      "phone": "02238 430091",
+      "street": "Park Str.",
+      "city": "Ingolstadt",
+      "houseNumber": "14"
+    }
+  },
+  {
+    "prename": "Stefan",
+    "name": "Achen",
+    "dateOfBirth": "1981-01-06",
+    "address": {
+      "zipcode": "85051",
+      "houseNumber": "15",
+      "phone": "05462 501855",
+      "street": "Lietzenburger Strasse",
+      "city": "Ingolstadt"
+    }
+  },
+  {
+    "prename": "Christine",
+    "name": "Brauer",
+    "dateOfBirth": "1998-03-11",
+    "address": {
+      "phone": "07156 632260",
+      "street": "Meinekestraße",
+      "zipcode": "85057",
+      "houseNumber": "41",
+      "city": "Ingolstadt"
+    }
+  },
+  {
+    "prename": "Lucas",
+    "name": "Schaefer",
+    "dateOfBirth": "1966-05-01",
+    "address": {
+      "zipcode": "4177",
+      "houseNumber": "15",
+      "phone": "06556 724635",
+      "street": "Kurfürstenstraße",
+      "city": "Leipzig"
+    }
+  },
+  {
+    "prename": "Stephan",
+    "name": "Schweitzer",
+    "dateOfBirth": "1973-02-08",
+    "address": {
+      "phone": "02948 907819",
+      "houseNumber": "54",
+      "street": "Rudower Strasse",
+      "city": "Leipzig",
+      "zipcode": "4357"
+    }
+  },
+  {
+    "prename": "Benjamin",
+    "name": "Schweizer",
+    "dateOfBirth": "1982-05-06",
+    "address": {
+      "phone": "08623 714317",
+      "street": "Gotzkowskystraße",
+      "houseNumber": "19",
+      "city": "Berlin",
+      "zipcode": "10115"
+    }
   }
 ]
