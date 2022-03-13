@@ -41,6 +41,7 @@ public class PersonServiceImpl implements PersonService {
     @Override
     public void addPersons(List<Person> persons) {
         personRepository.storePersons(persons);
+        analyticsRecorder.recordPersons(persons.stream().collect(Collectors.toMap(Person::getId, Person::getAddress)));
     }
 
     @Override

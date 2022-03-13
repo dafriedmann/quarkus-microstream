@@ -9,6 +9,8 @@ import io.restassured.http.ContentType;
 import org.apache.http.HttpStatus;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -17,22 +19,46 @@ import static org.junit.jupiter.api.Assertions.*;
 class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
 
     @Test
-    void addPersonShouldResultInAddedPerson() throws Exception {
+    void addPersonShouldResultInAddedPerson() {
         Person person = createSimplePerson("Max", "Mustermann");
-        given().contentType(ContentType.JSON).body(person).when().post("/add").then().statusCode(200);
+        given().contentType(ContentType.JSON).body(person).post("/add").then().statusCode(200);
     }
 
     @Test
-    void deletePersonShouldRemovePerson() {
+    void addPersonsShouldResultInAddedPersons() {
+        List<Person> personsToBeStored = List.of(
+                createSimplePerson("Max", "Mustermann"),
+                createSimplePerson("John", "Doe"),
+                createSimplePerson("Jane", "Doe")
+        );
+
+        given().contentType(ContentType.JSON).body(personsToBeStored).post("/add/batch").then().statusCode(200);
+
+        assertEquals(3, spm.getRoot().getPersons().size());
+    }
+
+    @Test
+    void deletePersonShouldDeletePerson() {
         Person personToBeDeleted = createAndStoreSimplePerson(1L, "Max", "Mustermann");
-        given().contentType(ContentType.JSON).body(personToBeDeleted).when().delete("/delete").then().statusCode(HttpStatus.SC_NO_CONTENT);
+        given().contentType(ContentType.JSON).body(personToBeDeleted).delete("/delete").then().statusCode(HttpStatus.SC_NO_CONTENT);
+    }
+
+    @Test
+    void deletePersonByIdShouldDeletePersonWithId() {
+        createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        createAndStoreSimplePerson(2L, "Jane", "Doe");
+
+        given().contentType(ContentType.JSON).delete("/delete/2").then().assertThat().statusCode(HttpStatus.SC_OK);
+
+        assertEquals(1, spm.getRoot().getPersons().size());
+        assertEquals(1L, spm.getRoot().getPersons().get(0).getId());
     }
 
     @Test
     void updatePersonShouldUpdatePerson() {
         Person person = createAndStoreSimplePerson(1L, "Max", "Mustermann");
         person.setName("Doe");
-        given().contentType(ContentType.JSON).body(person).when().post("/update").then().statusCode(HttpStatus.SC_OK);
+        given().contentType(ContentType.JSON).body(person).post("/update").then().statusCode(HttpStatus.SC_OK);
     }
 
     @Test
@@ -67,6 +93,17 @@ class PersonResourceIntegrationTest extends AbstractMicrostreamTest {
         Person[] persons = given().contentType(ContentType.JSON).get("/findbycity/Munich").then()
                 .assertThat().statusCode(HttpStatus.SC_OK).extract().as(Person[].class);
         assertEquals(2, persons.length);
+    }
+
+    @Test
+    void getPersonByIdShouldReturnPersonWithId() {
+        createAndStoreSimplePerson(1L, "Max", "Mustermann");
+        createAndStoreSimplePerson(2L, "Jane", "Doe");
+
+        Person person = given().contentType(ContentType.JSON).get("/get/2").then()
+                .assertThat().statusCode(HttpStatus.SC_OK).extract().as(Person.class);
+
+        assertEquals(2L, person.getId());
     }
 
     @Test

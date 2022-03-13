@@ -49,6 +49,10 @@ public class PersonRepository {
 
     public Optional<Person> updatePerson(Person person) {
         Optional<Person> foundPersonOptional = spm.getRoot().getPersons().stream().filter(p -> p.getId().equals(person.getId())).findAny();
+        if (!foundPersonOptional.isPresent()) {
+            return foundPersonOptional;
+        }
+
         Person foundPerson = foundPersonOptional.get();
 
         // copy values to update ref.

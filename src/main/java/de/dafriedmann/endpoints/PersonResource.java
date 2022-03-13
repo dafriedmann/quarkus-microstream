@@ -9,6 +9,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.util.Collection;
 import java.util.List;
+import java.util.Optional;
 
 @Path("/persons")
 public class PersonResource {
@@ -38,7 +39,7 @@ public class PersonResource {
     @GET
     @Path("/findbycity/{city}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findPersonsByArg(@PathParam("city") String city) {
+    public Response findPersonsByCity(@PathParam("city") String city) {
         List<Person> persons = personService.findPersonLivingInCity(city);
         if (persons.isEmpty()) {
             return Response.noContent().build();
@@ -60,10 +61,8 @@ public class PersonResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response updatePerson(Person person) {
-        if (personService.updatePerson(person).isPresent()) {
-            return Response.ok().build();
-        }
-        return Response.status(Response.Status.NOT_FOUND).build();
+        Optional<Person> updatedPerson = personService.updatePerson(person);
+        return updatedPerson.isPresent() ? Response.ok(updatedPerson.get()).build() : Response.status(Response.Status.NOT_FOUND).build();
     }
 
     @POST
@@ -76,33 +75,33 @@ public class PersonResource {
     }
 
     @GET
+    @Path("/get/{id}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getPersonById(@PathParam("id") long id) {
+        Optional<Person> person = personService.getPersonById(id);
+        return person.isPresent() ? Response.ok(person).build() : Response.status(Response.Status.NOT_FOUND).build();
+    }
+
+    @GET
     @Path("/import/demodata")
     @Produces(MediaType.APPLICATION_JSON)
     public Response importDemo() {
         List<Person> persons = personService.importDemoPersons();
-        if (persons.isEmpty()) {
-            return Response.noContent().build();
-        }
-        return Response.ok(personService.importDemoPersons()).build();
+        return persons.isEmpty() ? Response.serverError().build() : Response.ok(personService.importDemoPersons()).build();
     }
 
     @DELETE
     @Path("/delete")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public void removePerson(Person person) {
-        // todo return status
+    public void deletePerson(Person person) {
         this.personService.deletePerson(person);
     }
 
     @DELETE
     @Path("/delete/{id}")
-    public Response removePersonById(@PathParam("id") long id) {
-        boolean isRemoved = personService.deletePersonById(id);
-        if (isRemoved) {
-            return Response.ok().build();
-        }
-        return Response.status(Response.Status.NOT_FOUND).build();
+    public Response deletePersonById(@PathParam("id") long id) {
+        return personService.deletePersonById(id) ? Response.ok().build() : Response.status(Response.Status.NOT_FOUND).build();
     }
 
 }
